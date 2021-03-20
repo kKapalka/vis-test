@@ -4,6 +4,7 @@ import com.vis.test.dto.UserDto;
 import com.vis.test.model.User;
 import com.vis.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class UserController {
 
     @PostMapping("users")
     @PreAuthorize("hasAuthority('CREATE_USERS')")
+    @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody UserDto userDto) {
         return userService.saveUser(userDto);
     }

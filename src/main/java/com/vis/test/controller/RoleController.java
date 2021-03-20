@@ -7,6 +7,7 @@ import com.vis.test.model.Role;
 import com.vis.test.model.User;
 import com.vis.test.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class RoleController {
 
     @PostMapping("roles")
     @PreAuthorize("hasAuthority('CREATE_USERS')")
+    @ResponseStatus(HttpStatus.CREATED)
     public Role saveRole(@RequestBody RoleDto roleDto) {
         return roleService.saveRole(roleDto);
     }
