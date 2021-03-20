@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.EntityNotFoundException;
 
+/**
+ * This handler sets response status to 404
+ * whenever it encounters an EntityNotFoundException
+ */
 @ControllerAdvice
 public class EntityNotFoundExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)  // 404
