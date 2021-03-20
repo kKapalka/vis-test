@@ -5,15 +5,11 @@ import com.vis.test.model.Permission;
 import com.vis.test.model.Role;
 import com.vis.test.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +40,9 @@ public class RoleService {
         return roleRepository.save(persistedRole);
     }
     public void deleteRoleById(Long id) {
+        if(!roleRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
         roleRepository.deleteById(id);
     }
 

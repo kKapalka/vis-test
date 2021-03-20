@@ -46,6 +46,9 @@ public class UserService {
         return userRepository.save(persistedUser);
     }
     public void deleteUserById(Long id) {
+        if(!userRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
         userRepository.deleteById(id);
     }
 }
