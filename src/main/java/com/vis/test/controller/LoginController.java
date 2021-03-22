@@ -2,6 +2,8 @@ package com.vis.test.controller;
 
 import com.vis.test.dto.LoginDto;
 import com.vis.test.dto.TokenDto;
+import com.vis.test.model.Role;
+import com.vis.test.model.User;
 import com.vis.test.service.auth.UserDetailsServiceImpl;
 import com.vis.test.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/")
@@ -31,8 +35,13 @@ public class LoginController {
     @PostMapping("login")
     public TokenDto login(@RequestBody LoginDto loginDto) throws Exception{
         authenticate(loginDto.getUsername(), loginDto.getPassword());
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(loginDto.getUsername());
+        final UserDetails userDetails;
+        if("admin".equals(loginDto.getUsername())) {
+            userDetails = new User("admin", "", new Role("", new ArrayList<>()));
+        } else {
+            userDetails = userDetailsService
+                    .loadUserByUsername(loginDto.getUsername());
+        }
         final String token = jwtTokenUtils.generateToken(userDetails);
         return new TokenDto(token);
     }

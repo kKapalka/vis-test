@@ -18,26 +18,26 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("users")
-    @PreAuthorize("hasAuthority('LIST_USERS')")
+    @PreAuthorize("hasAuthority('LIST_USERS') or authentication.name == 'admin'")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @PutMapping("users/{id}")
-    @PreAuthorize("hasAuthority('EDIT_USERS')")
+    @PreAuthorize("hasAuthority('EDIT_USERS') or authentication.name == 'admin'")
     public User modifyUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         return userService.modifyUser(id, userDto);
     }
 
     @PostMapping("users")
-    @PreAuthorize("hasAuthority('CREATE_USERS')")
+    @PreAuthorize("hasAuthority('CREATE_USERS') or authentication.name == 'admin'")
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody UserDto userDto) {
         return userService.saveUser(userDto);
     }
 
     @DeleteMapping("users/{id}")
-    @PreAuthorize("hasAuthority('DELETE_USERS')")
+    @PreAuthorize("hasAuthority('DELETE_USERS') or authentication.name == 'admin'")
     public void deleteUserById(@PathVariable Long id) {
             userService.deleteUserById(id);
     }

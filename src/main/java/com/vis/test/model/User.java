@@ -6,7 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "USER")
@@ -75,7 +77,14 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.getRole().getPermissions();
+        if("admin".equals(this.username)) {
+            return List.of((GrantedAuthority) () -> "ADMIN");
+        } else {
+            if(this.role == null) {
+                return new ArrayList<>();
+            }
+            return this.getRole().getPermissions();
+        }
     }
 
     public String getPassword() {
@@ -92,5 +101,14 @@ public class User implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", role=" + role +
+                '}';
     }
 }
